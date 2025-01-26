@@ -1,0 +1,31 @@
+.nav {
+  display: flex; /* 横並びに設定 */
+  justify-content: space-between; /* 均等配置 */
+  background-color: #000; /* 背景色を黒に設定 */
+}
+
+.tab {
+  flex: 1; /* 各タブを均等幅に */
+  text-align: center; /* テキストを中央揃え */
+  padding: 10px 0; /* 上下の余白を設定 */
+  text-decoration: none; /* 下線を削除 */
+  color: white; /* テキスト色を白に設定 */
+  font-size: 1rem; /* テキストサイズ */
+  font-weight: bold; /* 太字 */
+  border-right: 1px solid white; /* 右側に白い境界線を追加 */
+}
+
+/* 最後のタブは右境界線を削除 */
+.tab:last-child {
+  border-right: none;
+}
+
+/* アクティブなタブ */
+.active {
+  background-color: #444; /* アクティブタブの背景色 */
+}
+
+/* ホバー時のタブ */
+.tab:hover {
+  background-color: #333; /* ホバー時の背景色 */
+}
