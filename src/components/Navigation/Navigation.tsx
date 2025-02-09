@@ -9,8 +9,8 @@ export default function Navigation() {
   return (
     <nav className={styles.nav}>
       <a
-        href="/game"
-        className={`${styles.tab} ${pathname === "/game" ? styles.active : ""}`}
+        href="/games"
+        className={`${styles.tab} ${pathname === "/games" ? styles.active : ""}`}
       >
         対局
       </a>
@@ -27,7 +27,7 @@ export default function Navigation() {
         成績
       </a>
       <a
-        href="/ranking"
+        href="/game"
         className={`${styles.tab} ${pathname === "/ranking" ? styles.active : ""}`}
       >
         ランキング

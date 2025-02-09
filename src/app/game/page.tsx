@@ -1,6 +1,9 @@
 "use client"
 import styles from "./GamePage.module.css";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+
+import { useSearchParams } from "next/navigation";
 
 const games = {
   id: "",
@@ -24,14 +27,39 @@ const game = {
   orders: []
 }
 
+type GamePlayerProps = {
+  players: string[];
+}
+
 export default function GamePage() {
+
+  const searchParams = useSearchParams();
+  const [players, setPlayers] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [results, setResults] = useState([
-    { name: "さじもと", score: 0.0, rounds: 0, avg: 0.0 },
-    { name: "向田偉紀", score: 0.0, rounds: 0, avg: 0.0 },
-    { name: "黒木", score: 0.0, rounds: 0, avg: 0.0 },
-    { name: "安田", score: 0.0, rounds: 0, avg: 0.0 },
-  ]);
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+      const playersParam = searchParams.get("players");
+      if (playersParam) {
+          setPlayers(JSON.parse(decodeURIComponent(playersParam)));
+      }
+  }, [searchParams]);
+
+console.log("遷移:", players);
+  console.log(`遷移:${players}`)
+  console.log(players)
+
+  useEffect(() => {
+    if (players.length > 0) {
+      setResults(players.map(player => ({
+        name: player,
+        score: 0.0,
+        rounds: 0,
+        avg: 0.0,
+      })));
+    }
+  }, [players]);  
+
 
   const [inputScores, setInputScores] = useState({});
   const [gameHistory, setGameHistory] = useState([]);
@@ -100,7 +128,7 @@ export default function GamePage() {
           </thead>
           <tbody>
             {results.map((player, index) => (
-              <tr key={player.name}>
+              <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{player.name}</td>
                 <td>{player.score}</td>
@@ -143,8 +171,8 @@ export default function GamePage() {
         <div className={styles.modal}>
           <div className={styles.modalContent}>
             <h3>成績入力</h3>
-            {results.map((player) => (
-              <div key={player.name} className={styles.inputGroup}>
+            {results.map((player, index) => (
+              <div key={index} className={styles.inputGroup}>
                 <label>{player.name}</label>
                 <input
                   type="number"
