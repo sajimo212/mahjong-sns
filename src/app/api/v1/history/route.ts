@@ -1,9 +1,10 @@
-import { getPlayerHistoryMock } from "@/mocks/handlers/history";
-import { History } from "@/types/history";
 import { NextRequest, NextResponse } from "next/server";
 
-export type GetHistoryParams = {};
-export type GetHistoryRequestBody = undefined;
+import { getPlayerHistoryMock } from "@/mocks/handlers/history";
+import type { History } from "@/types/history";
+
+export type GetHistoryParams = never;
+export type GetHistoryRequestBody = never;
 export type GetHistoryResponseBody = History;
 
 export const GET = async (request: NextRequest) => {
