@@ -2,7 +2,7 @@ import type { Game } from "@/types/game";
 import styles from "./ScorePage.module.css";
 
 const fetchGame = async ({ gameId }: { gameId: string }): Promise<Game> => {
-  const res = await fetch(`${process.env.API_URL}/api/v1/game/${gameId}`);
+  const res = await fetch(`${process.env.VERCEL_URL ?? process.env.API_URL}/api/v1/game/${gameId}`);
   const game = await res.json();
   return game;
 }

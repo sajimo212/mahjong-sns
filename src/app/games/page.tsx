@@ -6,7 +6,7 @@ import { ModalMakeGames } from "./ModalMakeGames";
 import styles from "./GamesPage.module.css";
 
 const fetchHistory = async (): Promise<History> => {
-    const res = await fetch(`${process.env.API_URL}/api/v1/history`);
+    const res = await fetch(`${process.env.VERCEL_URL ?? process.env.API_URL}/api/v1/history`);
     const history: History = await res.json();
     history.forEach(e => e.games.sort(({date: a}, {date: b}) => newestFirst(a, b)));
     return history;

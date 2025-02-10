@@ -52,7 +52,7 @@ export const getPlayerHistoryMock = ({length}: {length: number}): History => (
 
 export const historyHandlers = [
   http.get<GetHistoryParams, GetHistoryRequestBody, GetHistoryResponseBody>(
-    `${process.env.API_URL}/api/v1/history`,
+    `${process.env.VERCEL_URL ?? process.env.API_URL}/api/v1/history`,
     async () => {
       await delay();
       return HttpResponse.json(getPlayerHistoryMock({length: 10}));
