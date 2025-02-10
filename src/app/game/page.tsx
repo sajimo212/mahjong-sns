@@ -3,7 +3,7 @@ import styles from "./GamePage.module.css";
 import { use, useState } from "react";
 
 type SearchParams = Promise<{
-  players?: string[];
+  players?: string;
 }>
 
 type GameHistory = {
@@ -12,19 +12,24 @@ type GameHistory = {
   scores: Record<string, number>;
 }[];
 
+type Results = {
+  name: string;
+  score: number;
+  rounds: number;
+  avg: number;
+}[]
+
 export default function GamePage({ searchParams }: { searchParams: SearchParams }) {
   const { players } = use(searchParams);
   const [showModal, setShowModal] = useState(false);
-  const [results, setResults] = useState(players?.map(player => ({
+
+  
+  const [results, setResults] = useState<Results>(JSON.parse(players??"null")?.map((player: string) => ({
     name: player,
     score: 0.0,
     rounds: 0,
     avg: 0.0,
   })) ?? []);
-
-  console.log("遷移:", players);
-  console.log(`遷移:${players}`)
-  console.log(players)
 
   const [inputScores, setInputScores] = useState<Record<string, number>>({});
   const [gameHistory, setGameHistory] = useState<GameHistory>([]);

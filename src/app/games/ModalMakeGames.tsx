@@ -18,7 +18,7 @@ export const ModalMakeGames = () => {
 
   const router = useRouter();
   const handleSubmit = () => {
-    router.push(`/game?players=${encodeURIComponent(playerNames.join(','))}`);
+    router.push(`/game?players=${encodeURIComponent(JSON.stringify(playerNames))}`);
   };
 
   return (
