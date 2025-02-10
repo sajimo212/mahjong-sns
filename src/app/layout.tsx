@@ -1,8 +1,7 @@
-import SessionProvider from "./SessionProvider";
 import Header from "@/components/Header/Header";
 import Navigation from "@/components/Navigation/Navigation";
 
-if (process.env.USE_MOCK) {
+if (process.env.USE_MOCK === "true") {
   console.log("== setup mock: msw ==");
   const { initMocks } = await import("@/mocks");
   initMocks();
@@ -17,12 +16,9 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        {/* SessionProvider をクライアントコンポーネントとしてラップ */}
-        <SessionProvider>
-          <Header />
-          <Navigation />
-          <main>{children}</main>
-        </SessionProvider>
+        <Header />
+        <Navigation />
+        <main>{children}</main>
       </body>
     </html>
   );

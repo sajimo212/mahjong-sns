@@ -15,7 +15,7 @@ export const getGameMock = ({ gameId }: GetGameParams): Game => ({
 
 export const gameHandlers = [
   http.get<GetGameParams, GetGameRequestBody, GetGameResponseBody>(
-    `${process.env.VERCEL_URL ?? process.env.API_URL}/api/v1/game/:gameId`,
+    `${process.env.BASE_URL}/api/v1/game/:gameId`,
     async ({ params: { gameId } }) => {
       await delay();
       return HttpResponse.json(getGameMock({ gameId: `mock--${gameId}` }));

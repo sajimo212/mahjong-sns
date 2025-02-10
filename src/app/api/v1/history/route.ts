@@ -1,9 +1,11 @@
-import { getPlayerHistoryMock } from "@/mocks/handlers/history";
-import { History } from "@/types/history";
 import { NextRequest, NextResponse } from "next/server";
 
-export type GetHistoryParams = {};
-export type GetHistoryRequestBody = undefined;
+import { getPlayerHistoryMock } from "@/mocks/handlers/history";
+import type { History } from "@/types/history";
+import { delay } from "msw";
+
+export type GetHistoryParams = never;
+export type GetHistoryRequestBody = never;
 export type GetHistoryResponseBody = History;
 
 export const GET = async (request: NextRequest) => {
@@ -12,6 +14,8 @@ export const GET = async (request: NextRequest) => {
     return NextResponse.json({message: "Unauthorized"}, {status: 401});
   }
 
+  // @TODO: Implement: Get History from the database
+  await delay();
   const history = getPlayerHistoryMock({length: 5});
 
   return NextResponse.json<GetHistoryResponseBody>(history);
