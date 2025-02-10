@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link";
 import styles from "./Navigation.module.css";
 import { usePathname } from "next/navigation";
 
@@ -8,30 +9,30 @@ export default function Navigation() {
 
   return (
     <nav className={styles.nav}>
-      <a
-        href="/games"
-        className={`${styles.tab} ${pathname === "/games" ? styles.active : ""}`}
+      <Link
+        href="/history"
+        className={`${styles.tab} ${pathname === "/history" ? styles.active : ""}`}
       >
         対局
-      </a>
-      <a
+      </Link>
+      <Link
         href="/user"
         className={`${styles.tab} ${pathname === "/user" ? styles.active : ""}`}
       >
         ユーザー
-      </a>
-      <a
+      </Link>
+      <Link
         href="/score"
         className={`${styles.tab} ${pathname === "/score" ? styles.active : ""}`}
       >
         成績
-      </a>
-      <a
-        href="/game"
+      </Link>
+      <Link
+        href="/taikyoku"
         className={`${styles.tab} ${pathname === "/ranking" ? styles.active : ""}`}
       >
         ランキング
-      </a>
+      </Link>
     </nav>
   );
 }

@@ -2,9 +2,9 @@
 import { ChangeEvent, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import styles from './GamesPage.module.css';
+import styles from './HistoryPage.module.css';
 
-export const ModalMakeGames = () => {
+export const ModalMakeTaikyoku = () => {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const closeModal = () => dialogRef.current?.close();
   const openModal = () => dialogRef.current?.showModal();
@@ -18,7 +18,7 @@ export const ModalMakeGames = () => {
 
   const router = useRouter();
   const handleSubmit = () => {
-    router.push(`/game?players=${encodeURIComponent(JSON.stringify(playerNames))}`);
+    router.push(`/taikyoku?players=${encodeURIComponent(JSON.stringify(playerNames))}`);
   };
 
   return (

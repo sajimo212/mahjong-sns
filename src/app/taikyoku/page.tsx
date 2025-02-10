@@ -1,5 +1,5 @@
 "use client"
-import styles from "./GamePage.module.css";
+import styles from "./TaikyokuPage.module.css";
 import { use, useState } from "react";
 
 type SearchParams = Promise<{
@@ -19,7 +19,7 @@ type Results = {
   avg: number;
 }[]
 
-export default function GamePage({ searchParams }: { searchParams: SearchParams }) {
+export default function TaikyokuPage({ searchParams }: { searchParams: SearchParams }) {
   const { players } = use(searchParams);
   const [showModal, setShowModal] = useState(false);
 
