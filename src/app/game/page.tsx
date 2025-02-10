@@ -1,70 +1,35 @@
 "use client"
 import styles from "./GamePage.module.css";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { use, useState } from "react";
 
-import { useSearchParams } from "next/navigation";
+type SearchParams = Promise<{
+  players?: string[];
+}>
 
-const games = {
-  id: "",
-  type: "",
-  cnt: 4,
-  date: "",
-  players: [],
-  total_scores: [],
-  children: [],
-  played_cnt: [],
-  order_ave: [],
-}
+type GameHistory = {
+  id: number;
+  date: string;
+  scores: Record<string, number>;
+}[];
 
-const game = {
-  id: "",
-  players: [],
-  score: [],
-  date: "",
-  num: 1,
-  parent: "",
-  orders: []
-}
-
-type GamePlayerProps = {
-  players: string[];
-}
-
-export default function GamePage() {
-
-  const searchParams = useSearchParams();
-  const [players, setPlayers] = useState<string[]>([]);
+export default function GamePage({ searchParams }: { searchParams: SearchParams }) {
+  const { players } = use(searchParams);
   const [showModal, setShowModal] = useState(false);
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState(players?.map(player => ({
+    name: player,
+    score: 0.0,
+    rounds: 0,
+    avg: 0.0,
+  })) ?? []);
 
-  useEffect(() => {
-      const playersParam = searchParams.get("players");
-      if (playersParam) {
-          setPlayers(JSON.parse(decodeURIComponent(playersParam)));
-      }
-  }, [searchParams]);
-
-console.log("遷移:", players);
+  console.log("遷移:", players);
   console.log(`遷移:${players}`)
   console.log(players)
 
-  useEffect(() => {
-    if (players.length > 0) {
-      setResults(players.map(player => ({
-        name: player,
-        score: 0.0,
-        rounds: 0,
-        avg: 0.0,
-      })));
-    }
-  }, [players]);  
+  const [inputScores, setInputScores] = useState<Record<string, number>>({});
+  const [gameHistory, setGameHistory] = useState<GameHistory>([]);
 
-
-  const [inputScores, setInputScores] = useState({});
-  const [gameHistory, setGameHistory] = useState([]);
-
-  const handleInputChange = (name, value) => {
+  const handleInputChange = (name: string, value: string) => {
     setInputScores({ ...inputScores, [name]: parseFloat(value) || 0 });
   };
 
@@ -74,16 +39,16 @@ console.log("遷移:", players);
       score: player.score + (inputScores[player.name] || 0),
       rounds: player.rounds + 1,
     }));
-    
+
     updatedResults.sort((a, b) => b.score - a.score);
-    
+
     // 平均順位の計算
     const updatedGameHistory = [{ id: gameHistory.length + 1, date: new Date().toLocaleString(), scores: { ...inputScores } }, ...gameHistory];
-    
+
     updatedResults = updatedResults.map((player) => {
       let totalRank = 0;
       let gamesPlayed = 0;
-      
+
       updatedGameHistory.forEach((game) => {
         const sortedScores = Object.entries(game.scores).sort(([, a], [, b]) => b - a);
         const rank = sortedScores.findIndex(([name]) => name === player.name) + 1;
@@ -92,7 +57,7 @@ console.log("遷移:", players);
           gamesPlayed++;
         }
       });
-      
+
       return {
         ...player,
         avg: gamesPlayed > 0 ? totalRank / gamesPlayed : 0.0,

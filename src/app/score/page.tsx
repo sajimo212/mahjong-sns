@@ -1,13 +1,14 @@
+import type { Game } from "@/types/game";
 import styles from "./ScorePage.module.css";
 
-const fetchGame = async ({ id }: { id: string }) => {
-  const res = await fetch(`${process.env.API_URL}/api/v1/game/${id}`);
+const fetchGame = async ({ gameId }: { gameId: string }): Promise<Game> => {
+  const res = await fetch(`${process.env.API_URL}/api/v1/game/${gameId}`);
   const game = await res.json();
   return game;
 }
 
 export default async function ScorePage() {
-  const game = await fetchGame({ id: "game-mock-id" });
+  const game = await fetchGame({ gameId: "game-mock-id" });
 
   return (
     <div className={styles.container}>  
@@ -22,8 +23,8 @@ export default async function ScorePage() {
         <dt>スコア</dt>
         <dd>
           <ul>
-            {Object.entries(game.score).map(([name, score]) => (
-              <li key={name}>
+            {game.score.map(({ playerId, name, score }) => (
+              <li key={playerId}>
                 {name}: {score as number}
               </li>
             ))}
