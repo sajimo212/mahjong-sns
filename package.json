@@ -2,6 +2,13 @@
   "name": "mahjong-manage",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "22.x || 24.x",
+    "pnpm": "^10.0.0",
+    "npm": ">100.0.0",
+    "yarn": ">100.0.0"
+  },
+  "engineStrict": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
