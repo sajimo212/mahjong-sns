@@ -1,87 +1,29 @@
-"use client"
-
-import styles from "./GamesPage.module.css";
-import { useState } from "react";
-import GamePage from "../game/page";
 import Link from "next/link";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { History } from "@/types/history";
+import { newestFirst } from "@/lib/utils";
 
+import { ModalMakeGames } from "./ModalMakeGames";
+import styles from "./GamesPage.module.css";
 
-const history = [
-    {
-        date: "2001/02/12",
-    },
-    {
-        date: "2001/02/13",
-    },
-    {
-        date: "2001/02/14",
-    },
-    {
-        date: "2001/02/15",
-    },
-]
+const fetchHistory = async (): Promise<History> => {
+    const res = await fetch(`${process.env.API_URL}/api/v1/history`);
+    const history: History = await res.json();
+    history.forEach(e => e.games.sort(({date: a}, {date: b}) => newestFirst(a, b)));
+    return history;
+}
 
+export default async function GamesPage() {
+    const history = await fetchHistory();
 
-
-
-export default function GamesPage() {
-    const [showModal, setShowModal] = useState(false);
-    const [playerNames, setPlayerNames] = useState(["", "", "", ""]);
-
-    const handleChange = (index, event) => {
-        const newPlayerNames = [...playerNames];
-        newPlayerNames[index] = event.target.value;
-        setPlayerNames(newPlayerNames);
-    };
-
-    const router = useRouter();
-    const handleSubmit = () => {
-        router.push(`/game?players=${encodeURIComponent(JSON.stringify(playerNames))}`);
-    };
-    
     return (
         <div className={styles.container}>
-            <button className = {styles.mainButton} onClick={() => setShowModal(true)}>
-                対局を作成する
-            </button>
+            <ModalMakeGames />
             <h2>対局一覧</h2>
-            {history.map((game, index) => (
-                <div key ={index}>
-                    <Link href="/game">{game.date}</Link>
+            {history.map(({ id, games }) => (
+                <div key ={id}>
+                    <Link href="/game">{games[0]?.date ?? '未入力'}</Link>
                 </div>
             ))}
-            {showModal && (
-                <div className={styles.modal}>
-                    <div className={styles.modalContent}>
-                        <h3>対局を作成する</h3>
-                        <div>
-                            {playerNames.map((name, i) => (
-                                <div key={i} className={styles.inputGroup}>
-                                    <label>プレイヤー{i + 1}</label>
-                                    <input
-                                        type="text"
-                                        value={name}
-                                        onChange={(event) => handleChange(i, event)}
-                                    />
-                                </div>
-                            ))}
-                            
-                        </div>
-                        
-                            {playerNames.map((name, i) => (
-                                <div key={i}>
-                                    {name}
-                                </div>
-                            ))}
-                        
-                        <button className={styles.submitButton} onClick={handleSubmit}>作成する</button>
-                        <button className={styles.cancelButton} onClick={() => setShowModal(false)}>キャンセル</button>
-                    </div>
-                    
-                </div>
-                
-            )}
         </div>
     )
 }
