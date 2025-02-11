@@ -1,7 +1,8 @@
 import Header from "@/components/Header/Header";
 import Navigation from "@/components/Navigation/Navigation";
+import { env } from "@/env";
 
-if (process.env.USE_MOCK === "true") {
+if (env.USE_MOCK === "true") {
   console.log("== setup mock: msw ==");
   const { initMocks } = await import("@/mocks");
   initMocks();

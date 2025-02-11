@@ -1,13 +1,18 @@
 import Link from "next/link";
-import { History } from "@/types/history";
+import { History, historySchema } from "@/types/history";
 import { newestFirst } from "@/lib/utils";
+import { env } from '@/env';
 
 import { ModalMakeGames } from "./ModalMakeGames";
 import styles from "./GamesPage.module.css";
 
 const fetchHistory = async (): Promise<History> => {
-    const res = await fetch(`${process.env.BASE_URL}/api/v1/history`);
-    const history: History = await res.json();
+    const res = await fetch(`${env.BASE_URL}/api/v1/history`);
+
+    const parsed = await res.json().then(historySchema.safeParse);
+    if (!parsed.success) throw parsed.error;
+
+    const history = parsed.data;
     history.forEach(e => e.games.sort(({date: a}, {date: b}) => newestFirst(a, b)));
     return history;
 }

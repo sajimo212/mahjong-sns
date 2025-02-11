@@ -1,8 +1,9 @@
 import type { Game } from "@/types/game";
 import styles from "./ScorePage.module.css";
+import { env } from "@/env";
 
 const fetchGame = async ({ gameId }: { gameId: string }): Promise<Game> => {
-  const res = await fetch(`${process.env.BASE_URL}/api/v1/game/${gameId}`);
+  const res = await fetch(`${env.BASE_URL}/api/v1/game/${gameId}`);
   const game = await res.json();
   return game;
 }

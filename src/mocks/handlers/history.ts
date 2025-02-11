@@ -3,6 +3,7 @@ import type { Game, Games, Player } from '@/types/game';
 import type { History } from '@/types/history';
 import { getGameMock } from './game';
 import { GetHistoryParams, GetHistoryRequestBody, GetHistoryResponseBody } from '@/app/api/v1/history/route';
+import { env } from '@/env';
 
 const getParticipatedPlayersFromGameList = (games: Game[]): Player[] => {
    const players: Required<Player>[] = [];
@@ -52,7 +53,7 @@ export const getPlayerHistoryMock = ({length}: {length: number}): History => (
 
 export const historyHandlers = [
   http.get<GetHistoryParams, GetHistoryRequestBody, GetHistoryResponseBody>(
-    `${process.env.BASE_URL}/api/v1/history`,
+    `${env.BASE_URL}/api/v1/history`,
     async () => {
       await delay();
       return HttpResponse.json(getPlayerHistoryMock({length: 10}));

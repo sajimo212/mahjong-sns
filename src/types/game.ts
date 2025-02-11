@@ -23,8 +23,8 @@ export const gameSchema = z.object({
 
 export const gamesSchema = z.object({
    id: z.string(),
-   games: z.array(gameSchema),
-   players: z.array(playerSchema),
+   games: z.array(gameSchema, { required_error: "対局が見つかりません" }),
+   players: z.array(playerSchema, { required_error: "対局のプレイヤーが見つかりません" }),
 });
 
 export type Player = z.infer<typeof playerSchema>;

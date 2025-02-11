@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { useState } from "react";
 import styles from "./Signin.module.css";
+import { env } from "@/env";
 
 export default function SignIn() {
   const [username, setUsername] = useState(""); // ユーザー名の状態
@@ -10,7 +11,7 @@ export default function SignIn() {
   const [error, setError] = useState(""); // エラーメッセージの状態
 
   const handleLogin = async () => {
-    const res = await fetch(`${process.env.BASE_URL}/api/signin`, {
+    const res = await fetch(`${env.BASE_URL}/api/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
