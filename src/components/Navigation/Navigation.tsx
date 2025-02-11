@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import styles from "./Navigation.module.css";
 import { usePathname } from "next/navigation";

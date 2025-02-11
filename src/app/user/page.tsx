@@ -8,8 +8,8 @@ import { redirect } from "next/navigation";
 export default function UserPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const status: string = 'idle';
-  const isAuth: boolean = false;
+  const status: string = "idle"; // eslint-disable-line @typescript-eslint/no-inferrable-types
+  const isAuth: boolean = false; // eslint-disable-line @typescript-eslint/no-inferrable-types
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,7 +22,7 @@ export default function UserPage() {
     return <p className={styles.loading}>読み込み中...</p>;
   }
 
-  if (!isAuth) {
+  if (!isAuth) { // eslint-disable-line @typescript-eslint/no-unnecessary-condition
     return (
       <div>
         <h1 className={styles.title}>ログイン</h1>
@@ -33,7 +33,7 @@ export default function UserPage() {
               type="text"
               autoComplete="username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={e => setUsername(e.target.value)}
               className={styles.input}
               required
             />
@@ -43,7 +43,7 @@ export default function UserPage() {
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               className={styles.input}
               required
             />
@@ -59,7 +59,10 @@ export default function UserPage() {
   return (
     <div>
       <h1 className={styles.title}>ユーザー情報画面</h1>
-      <p className={styles.info}>名前: {username}</p>
+      <p className={styles.info}>
+        名前:
+        {username}
+      </p>
       {/* <button onClick={() => signOut()} className={styles.button}>
         ログアウト
       </button> */}

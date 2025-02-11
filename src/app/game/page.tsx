@@ -1,10 +1,10 @@
-"use client"
+"use client";
 import styles from "./GamePage.module.css";
 import { use, useState } from "react";
 
 type SearchParams = Promise<{
   players?: string;
-}>
+}>;
 
 type GameHistory = {
   id: number;
@@ -17,19 +17,20 @@ type Results = {
   score: number;
   rounds: number;
   avg: number;
-}[]
+}[];
 
 export default function GamePage({ searchParams }: { searchParams: SearchParams }) {
   const { players } = use(searchParams);
   const [showModal, setShowModal] = useState(false);
 
-  
-  const [results, setResults] = useState<Results>(JSON.parse(players??"null")?.map((player: string) => ({
-    name: player,
-    score: 0.0,
-    rounds: 0,
-    avg: 0.0,
-  })) ?? []);
+  const [results, setResults] = useState<Results>(
+    (JSON.parse(players ?? "null") as string[] | null)?.map(name => ({
+      name,
+      score: 0.0,
+      rounds: 0,
+      avg: 0.0,
+    })) ?? [],
+  );
 
   const [inputScores, setInputScores] = useState<Record<string, number>>({});
   const [gameHistory, setGameHistory] = useState<GameHistory>([]);
@@ -39,7 +40,7 @@ export default function GamePage({ searchParams }: { searchParams: SearchParams 
   };
 
   const handleSubmit = () => {
-    let updatedResults = results.map((player) => ({
+    let updatedResults = results.map(player => ({
       ...player,
       score: player.score + (inputScores[player.name] || 0),
       rounds: player.rounds + 1,
@@ -77,9 +78,18 @@ export default function GamePage({ searchParams }: { searchParams: SearchParams 
   return (
     <div className={styles.container}>
       <div className={styles.infoPanel}>
-        <p><strong>対局名:</strong> 麻雀 2025/01/13</p>
-        <p><strong>ルール:</strong> Mリーグルール</p>
-        <p><strong>参加者:</strong> 4人</p>
+        <p>
+          <strong>対局名: </strong>
+          麻雀 2025/01/13
+        </p>
+        <p>
+          <strong>ルール: </strong>
+          Mリーグルール
+        </p>
+        <p>
+          <strong>参加者: </strong>
+          4人
+        </p>
       </div>
       <button className={styles.mainButton} onClick={() => setShowModal(true)}>
         成績を入力する
@@ -113,7 +123,13 @@ export default function GamePage({ searchParams }: { searchParams: SearchParams 
         <h2>半荘ごとの成績</h2>
         {gameHistory.map((game, index) => (
           <div key={game.id} className={styles.gameRecord}>
-            <h3>{gameHistory.length - index} : {game.date}</h3>
+            <h3>
+              {gameHistory.length - index}
+              {" "}
+              :
+              {" "}
+              {game.date}
+            </h3>
             <table>
               <thead>
                 <tr>
@@ -146,7 +162,7 @@ export default function GamePage({ searchParams }: { searchParams: SearchParams 
                 <label>{player.name}</label>
                 <input
                   type="number"
-                  onChange={(e) => handleInputChange(player.name, e.target.value)}
+                  onChange={e => handleInputChange(player.name, e.target.value)}
                 />
               </div>
             ))}
