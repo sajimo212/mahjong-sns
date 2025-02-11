@@ -1,13 +1,13 @@
 import type { NextConfig } from "next";
-import '@/env';
+import "@/env";
 
 const nextConfig: NextConfig = {
   experimental: {
     typedRoutes: true,
   },
   eslint: {
-    dirs: ['src', '.']
-  }
+    dirs: ["src", "."],
+  },
 };
 
 export default nextConfig;

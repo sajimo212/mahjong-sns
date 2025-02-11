@@ -9,14 +9,14 @@ export type GetHistoryRequestBody = never;
 export type GetHistoryResponseBody = History;
 
 export const GET = async (request: NextRequest) => {
-  const auth = request.headers.get('Authorization');
+  const auth = request.headers.get("Authorization");
   if (!auth) {
-    return NextResponse.json({message: "Unauthorized"}, {status: 401});
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   // @TODO: Implement: Get History from the database
   await delay();
-  const history = getPlayerHistoryMock({length: 5});
+  const history = getPlayerHistoryMock({ length: 5 });
 
   return NextResponse.json<GetHistoryResponseBody>(history);
 };

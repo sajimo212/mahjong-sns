@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import isISO8601 from 'validator/es/lib/isISO8601';
+import { z } from "zod";
+import isISO8601 from "validator/es/lib/isISO8601";
 
 const isPast = (value: string) => new Date(value).valueOf() < Date.now().valueOf();
 

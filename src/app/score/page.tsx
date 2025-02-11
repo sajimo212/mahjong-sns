@@ -7,16 +7,16 @@ const fetchGame = async ({ gameId }: { gameId: string }): Promise<Game> => {
 
   const parsed = await res.json().then(body => gameSchema.safeParse(body));
   if (!parsed.success) throw parsed.error;
-  
+
   const game = parsed.data;
   return game;
-}
+};
 
 export default async function ScorePage() {
   const game = await fetchGame({ gameId: "game-mock-id" });
 
   return (
-    <div className={styles.container}>  
+    <div className={styles.container}>
       <h1 className={styles.title}>対局一覧！！</h1>
       <button className={styles.button}>対局を作成する</button>
       <p className={styles.info}>まだ対局結果がありません。</p>
@@ -30,7 +30,9 @@ export default async function ScorePage() {
           <ul>
             {game.score.map(({ playerId, name, score }) => (
               <li key={playerId}>
-                {name}: {score}
+                {name}
+                :
+                {score}
               </li>
             ))}
           </ul>

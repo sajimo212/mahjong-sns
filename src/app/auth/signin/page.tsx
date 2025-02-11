@@ -35,14 +35,14 @@ export default function SignIn() {
           type="text"
           placeholder="ユーザー名"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={e => setUsername(e.target.value)}
           className={styles.input}
         />
         <input
           type="password"
           placeholder="パスワード"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           className={styles.input}
         />
         <button type="submit" className={styles.button}>

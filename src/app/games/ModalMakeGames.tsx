@@ -1,11 +1,11 @@
-'use client'
-import { ChangeEvent, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+"use client";
+import { ChangeEvent, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
-import styles from './GamesPage.module.css';
+import styles from "./GamesPage.module.css";
 
 export const ModalMakeGames = () => {
-  const dialogRef = useRef<HTMLDialogElement>(null)
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const closeModal = () => dialogRef.current?.close();
   const openModal = () => dialogRef.current?.showModal();
 
@@ -34,11 +34,14 @@ export const ModalMakeGames = () => {
             <div>
               {playerNames.map((name, i) => (
                 <div key={i} className={styles.inputGroup}>
-                  <label>プレイヤー{i + 1}</label>
+                  <label>
+                    プレイヤー
+                    {i + 1}
+                  </label>
                   <input
                     type="text"
                     value={name}
-                    onChange={(event) => handleChange(i, event)}
+                    onChange={event => handleChange(i, event)}
                   />
                 </div>
               ))}
@@ -55,4 +58,4 @@ export const ModalMakeGames = () => {
       </dialog>
     </>
   );
-}
+};
