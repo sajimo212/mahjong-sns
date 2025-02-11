@@ -23,13 +23,14 @@ export default function GamePage({ searchParams }: { searchParams: SearchParams 
   const { players } = use(searchParams);
   const [showModal, setShowModal] = useState(false);
 
-  
-  const [results, setResults] = useState<Results>(JSON.parse(players??"null")?.map((player: string) => ({
-    name: player,
-    score: 0.0,
-    rounds: 0,
-    avg: 0.0,
-  })) ?? []);
+  const [results, setResults] = useState<Results>(
+    (JSON.parse(players ?? "null") as string[] | null)?.map((name) => ({
+      name,
+      score: 0.0,
+      rounds: 0,
+      avg: 0.0,
+    })) ?? []
+  );
 
   const [inputScores, setInputScores] = useState<Record<string, number>>({});
   const [gameHistory, setGameHistory] = useState<GameHistory>([]);

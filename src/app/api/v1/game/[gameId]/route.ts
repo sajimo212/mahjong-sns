@@ -7,7 +7,7 @@ export type GetGameParams = { gameId: string };
 export type GetGameRequestBody = undefined;
 export type GetGameResponseBody = Game;
 
-export const GET = async (_: NextRequest, { params }: {params: Promise<GetGameParams>}) => {
+export const GET = async (_: NextRequest, { params }: { params: Promise<GetGameParams> }) => {
    const { gameId } = await params;
 
    // @TODO: Implement: Get Game by ID from the database

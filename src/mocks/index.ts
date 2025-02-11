@@ -20,6 +20,6 @@ export async function initMocks() {
   } else {
     console.log('initMocks on browser...!')
     const { worker } = await import('./browser')
-    worker.start(sharedOptions)
+    await worker.start(sharedOptions)
   }
 }

@@ -9,7 +9,7 @@ import styles from "./GamesPage.module.css";
 const fetchHistory = async (): Promise<History> => {
     const res = await fetch(`${env.BASE_URL}/api/v1/history`);
 
-    const parsed = await res.json().then(historySchema.safeParse);
+    const parsed = await res.json().then(body => historySchema.safeParse(body));
     if (!parsed.success) throw parsed.error;
 
     const history = parsed.data;

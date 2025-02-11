@@ -1,10 +1,14 @@
-import type { Game } from "@/types/game";
+import { gameSchema, type Game } from "@/types/game";
 import styles from "./ScorePage.module.css";
 import { env } from "@/env";
 
 const fetchGame = async ({ gameId }: { gameId: string }): Promise<Game> => {
   const res = await fetch(`${env.BASE_URL}/api/v1/game/${gameId}`);
-  const game = await res.json();
+
+  const parsed = await res.json().then(body => gameSchema.safeParse(body));
+  if (!parsed.success) throw parsed.error;
+  
+  const game = parsed.data;
   return game;
 }
 
@@ -26,7 +30,7 @@ export default async function ScorePage() {
           <ul>
             {game.score.map(({ playerId, name, score }) => (
               <li key={playerId}>
-                {name}: {score as number}
+                {name}: {score}
               </li>
             ))}
           </ul>

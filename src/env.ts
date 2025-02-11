@@ -12,12 +12,12 @@ export const env = createEnv({
   //   NEXT_PUBLIC_USE_MOCK: z.literal("true").optional(),
   // },
   runtimeEnv: {
-      BASE_URL: process.env.VERCEL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000',
-      VERCEL: process.env.VERCEL,
-      VERCEL_URL: process.env.VERCEL_URL,
-      USE_MOCK: process.env.USE_MOCK,
+    BASE_URL: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000',
+    VERCEL: process.env.VERCEL,
+    VERCEL_URL: process.env.VERCEL_URL,
+    USE_MOCK: process.env.USE_MOCK,
   },
-//   experimental__runtimeEnv: process.env,
+  // experimental__runtimeEnv: process.env,
 
   /**
    * By default, this library will feed the environment variables directly to

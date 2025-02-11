@@ -5,7 +5,7 @@ import { env } from "@/env";
 if (env.USE_MOCK === "true") {
   console.log("== setup mock: msw ==");
   const { initMocks } = await import("@/mocks");
-  initMocks();
+  await initMocks();
   console.log("== setup mock: msw (done) ==");
 }
 
