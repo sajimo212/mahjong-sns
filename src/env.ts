@@ -5,7 +5,7 @@ export const env = createEnv({
   server: {
     BASE_URL: z.string().url(),
     VERCEL: z.literal("1").optional(),
-    VERCEL_URL: z.string().url().optional(),
+    VERCEL_URL: z.string().optional(),
     USE_MOCK: z.union([z.literal("true"), z.literal("false")]).optional(),
   },
   // client: {

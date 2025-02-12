@@ -1,6 +1,4 @@
-import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { applicationDefault, initializeApp } from "firebase-admin/app";
 
 // Firebaseの設定（環境変数を利用）
 const firebaseConfig = {
@@ -10,9 +8,11 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-};
+} as const;
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const provider = new GoogleAuthProvider();
-export const db = getFirestore(app);
+const app = initializeApp({
+  credential: applicationDefault(),
+});
+export const auth = app.auth();
+// export const provider = new GoogleAuthProvider();
+export const db = app.firestore();
