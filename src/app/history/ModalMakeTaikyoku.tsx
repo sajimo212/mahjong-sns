@@ -1,5 +1,5 @@
 "use client";
-import { ChangeEvent, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import styles from "./HistoryPage.module.css";
@@ -30,14 +30,7 @@ export const ModalMakeTaikyoku = () => {
     }));
   };
 
-  const [playerNames, setPlayerNames] = useState(["", "", "", ""]);
-
   const router = useRouter();
-  /*
-  const handleSubmit = () => {
-    router.push(`/taikyoku?rules=${encodeURIComponent(JSON.stringify(selectedValues))}`);
-  };
-*/
   const handleSubmit = () => {
     router.push(`/history/${taikyokuId}`);
   };
