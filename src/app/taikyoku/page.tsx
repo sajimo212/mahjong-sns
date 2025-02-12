@@ -1,11 +1,22 @@
 "use client"
 import styles from "./TaikyokuPage.module.css";
 import { use, useState } from "react";
+import { useSearchParams } from 'next/navigation';
 
+type Taikyokutype = {
+  type: string;
+  uma: string;
+  oka: string;
+};
+
+type SearchParams = Promise<{
+  rules?: Taikyokutype;
+}>
+/*
 type SearchParams = Promise<{
   players?: string;
 }>
-
+*/
 type GameHistory = {
   id: number;
   date: string;
@@ -20,10 +31,25 @@ type Results = {
 }[]
 
 export default function TaikyokuPage({ searchParams }: { searchParams: SearchParams }) {
-  const { players } = use(searchParams);
+  // const { players } = use(searchParams);
   const [showModal, setShowModal] = useState(false);
+  const {rules} = use(searchParams);
 
-  
+  const searchParams2 = useSearchParams();
+
+  // クエリパラメータを取得
+  const type = searchParams2.get("type") ?? "";
+  const uma = searchParams2.get("uma") ?? "";
+  const oka = searchParams2.get("oka") ?? "";
+
+  return (
+    <div>
+      console.log({type})
+      console.log({uma})
+      console.log({oka})
+    </div>
+  )
+  /*
   const [results, setResults] = useState<Results>(JSON.parse(players??"null")?.map((player: string) => ({
     name: player,
     score: 0.0,
@@ -157,4 +183,5 @@ export default function TaikyokuPage({ searchParams }: { searchParams: SearchPar
       )}
     </div>
   );
+  */
 }
