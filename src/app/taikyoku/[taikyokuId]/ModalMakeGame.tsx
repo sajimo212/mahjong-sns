@@ -28,7 +28,7 @@ export const ModalMakeGame = ({ players }: { players: Player[] }) => {
                 <label>{player.name}</label>
                 <input
                   type="number"
-                  onChange={handleSubmit}
+                  
                 />
               </div>
             ))}
