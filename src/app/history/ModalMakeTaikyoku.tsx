@@ -32,7 +32,7 @@ export const ModalMakeTaikyoku = () => {
 
   const router = useRouter();
   const handleSubmit = () => {
-    router.push(`/history/${taikyokuId}`);
+    router.push(`/taikyoku/${taikyokuId}`);
   };
 
   return (
