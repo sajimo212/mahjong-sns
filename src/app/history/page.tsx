@@ -2,9 +2,8 @@ import Link from "next/link";
 import { History, historySchema } from "@/types/history";
 import { newestFirst } from "@/lib/utils";
 import { env } from "@/env";
-
-import { ModalMakeGames } from "./ModalMakeGames";
-import styles from "./GamesPage.module.css";
+import { ModalMakeTaikyoku } from "./ModalMakeTaikyoku";
+import styles from "./HistoryPage.module.css";
 
 const fetchHistory = async (): Promise<History> => {
   const res = await fetch(`${env.BASE_URL}/api/v1/history`);
@@ -19,14 +18,15 @@ const fetchHistory = async (): Promise<History> => {
 
 export default async function GamesPage() {
   const history = await fetchHistory();
-
   return (
     <div className={styles.container}>
-      <ModalMakeGames />
+      <ModalMakeTaikyoku />
       <h2>対局一覧</h2>
-      {history.map(({ id, games }) => (
+      {history.map(({ id }) => (
         <div key={id}>
-          <Link href="/game">{games[0]?.date ?? "未入力"}</Link>
+          <Link href={`/taikyoku/${id}`}>
+            {id ?? "未入力"}
+          </Link>
         </div>
       ))}
     </div>
