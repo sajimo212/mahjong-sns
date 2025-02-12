@@ -28,7 +28,7 @@ type Results = {
   score: number;
   rounds: number;
   avg: number;
-}[]
+}[];
 
 export default function TaikyokuPage({ searchParams }: { searchParams: SearchParams }) {
   // const { players } = use(searchParams);
@@ -65,7 +65,7 @@ export default function TaikyokuPage({ searchParams }: { searchParams: SearchPar
   };
 
   const handleSubmit = () => {
-    let updatedResults = results.map((player) => ({
+    let updatedResults = results.map(player => ({
       ...player,
       score: player.score + (inputScores[player.name] || 0),
       rounds: player.rounds + 1,
@@ -103,9 +103,18 @@ export default function TaikyokuPage({ searchParams }: { searchParams: SearchPar
   return (
     <div className={styles.container}>
       <div className={styles.infoPanel}>
-        <p><strong>対局名:</strong> 麻雀 2025/01/13</p>
-        <p><strong>ルール:</strong> Mリーグルール</p>
-        <p><strong>参加者:</strong> 4人</p>
+        <p>
+          <strong>対局名: </strong>
+          麻雀 2025/01/13
+        </p>
+        <p>
+          <strong>ルール: </strong>
+          Mリーグルール
+        </p>
+        <p>
+          <strong>参加者: </strong>
+          4人
+        </p>
       </div>
       <button className={styles.mainButton} onClick={() => setShowModal(true)}>
         成績を入力する
@@ -139,7 +148,13 @@ export default function TaikyokuPage({ searchParams }: { searchParams: SearchPar
         <h2>半荘ごとの成績</h2>
         {gameHistory.map((game, index) => (
           <div key={game.id} className={styles.gameRecord}>
-            <h3>{gameHistory.length - index} : {game.date}</h3>
+            <h3>
+              {gameHistory.length - index}
+              {" "}
+              :
+              {" "}
+              {game.date}
+            </h3>
             <table>
               <thead>
                 <tr>
@@ -172,7 +187,7 @@ export default function TaikyokuPage({ searchParams }: { searchParams: SearchPar
                 <label>{player.name}</label>
                 <input
                   type="number"
-                  onChange={(e) => handleInputChange(player.name, e.target.value)}
+                  onChange={e => handleInputChange(player.name, e.target.value)}
                 />
               </div>
             ))}
