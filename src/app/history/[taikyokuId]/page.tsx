@@ -1,7 +1,10 @@
-"use client";
 import styles from "./TaikyokuPage.module.css";
-import { use, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { History, historySchema } from "@/types/history";
+import { newestFirst } from "@/lib/utils";
+import { env } from "@/env";
+import { ModalMakeGame } from "./ModalMakeGame";
 
 type Taikyokutype = {
   type: string;
@@ -12,49 +15,129 @@ type Taikyokutype = {
 type SearchParams = Promise<{
   rules?: Taikyokutype;
 }>;
-/*
-type SearchParams = Promise<{
-  players?: string;
-}>
-*/
-type GameHistory = {
-  id: number;
-  date: string;
-  scores: Record<string, number>;
-}[];
 
-type Results = {
-  name: string;
-  score: number;
-  rounds: number;
-  avg: number;
-}[];
+const fetchHistory = async (): Promise<History> => {
+  const res = await fetch(`${env.BASE_URL}/api/v1/history`);
 
-export default function TaikyokuPage({ searchParams }: { searchParams: SearchParams }) {
-  // const { players } = use(searchParams);
-  const [showModal, setShowModal] = useState(false);
-  const { rules } = use(searchParams);
+  const parsed = await res.json().then(body => historySchema.safeParse(body));
+  if (!parsed.success) throw parsed.error;
 
-  const searchParams2 = useSearchParams();
+  const history = parsed.data;
+  history.forEach(e => e.games.sort(({ date: a }, { date: b }) => newestFirst(a, b)));
+  return history;
+};
 
-  // クエリパラメータを取得
-  const type = searchParams2.get("type") ?? "";
-  const uma = searchParams2.get("uma") ?? "";
-  const oka = searchParams2.get("oka") ?? "";
+const taikyokuId = 0;
+
+export default async function TaikyokuPage({ searchParams }: { searchParams: SearchParams }) {
+  const history = await fetchHistory();
+  const results = history[taikyokuId].games[0].score;
+  const gameHistory = history[taikyokuId].games;
+  const players = history[taikyokuId].players;
 
   return (
-    <div>
-      console.log(
-      {type}
+    <div className={styles.container}>
+      <div className={styles.infoPanel}>
+        <p>
+          <strong>対局日: </strong>
+          {gameHistory[0].date}
+        </p>
+        <p>
+          <strong>ルール: </strong>
+          Mリーグルール // ここは、gameHistoryから取りたい
+        </p>
+        <p>
+          <strong>参加者: </strong>
+          4人  // ここもgameHistoryから取りたい
+        </p>
+      </div>
+      <ModalMakeGame players={players} />
+      <div className={styles.rankingTable}>
+        <h2>トータル成績</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>名前</th>
+              <th>スコア</th>
+              <th>半荘数</th>
+              <th>平均順位</th>
+            </tr>
+          </thead>
+          <tbody>
+            {players.map((player, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{player.name}</td>
+                <td>{player.totalScore}</td>
+                <td>{gameHistory.length}</td>
+                <td>{player.averageRank}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className={styles.historyTable}>
+        <h2>半荘ごとの成績</h2>
+        {gameHistory.map((game, index) => (
+          <div key={game.id} className={styles.gameRecord}>
+            <h3>
+              {gameHistory.length - index}
+              {" "}
+              :
+              {" "}
+              {game.date}
+            </h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>順位</th>
+                  <th>名前</th>
+                  <th>スコア</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(game.score)
+                  .sort((a, b) => b[1].score - a[1].score)
+                  .map(([name, score], i) => (
+                    <tr key={name}>
+                      <td>{i + 1}</td>
+                      <td>{name}</td>
+                      <td>{score.score}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        ))}
+      </div>
+
+      {
+      /*
+      showModal && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <h3>成績入力</h3>
+            {results.map((player, index) => (
+              <div key={index} className={styles.inputGroup}>
+                <label>{player.name}</label>
+                <input
+                  type="number"
+                  onChange={e => handleInputChange(player.name, e.target.value)}
+                />
+              </div>
+            ))}
+            <button className={styles.submitButton} onClick={handleSubmit}>入力する</button>
+            <button className={styles.cancelButton} onClick={() => setShowModal(false)}>キャンセル</button>
+          </div>
+        </div>
       )
-      console.log(
-      {uma}
-      )
-      console.log(
-      {oka}
-      )
+      */
+      }
+
     </div>
   );
+
   /*
   const [results, setResults] = useState<Results>(JSON.parse(players??"null")?.map((player: string) => ({
     name: player,
