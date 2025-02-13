@@ -24,8 +24,8 @@ export default async function GamesPage() {
       <h2>対局一覧</h2>
       {history.map(({ id }) => (
         <div key={id}>
-          <Link href={`/taikyoku/${id}`}>
-            {id ?? "未入力"}
+          <Link href={{ pathname: `/taikyoku/${id}` }}>
+            {id || "未入力"}
           </Link>
         </div>
       ))}
