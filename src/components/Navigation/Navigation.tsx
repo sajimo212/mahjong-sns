@@ -25,7 +25,7 @@ export default function Navigation() {
         href={{ pathname: "/ranking" }}
         className={`${styles.tab} ${pathname === "/ranking" ? styles.active : ""}`}
       >
-        ランキング
+        募集
       </Link>
       <Link
         href="/score"

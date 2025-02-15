@@ -8,9 +8,7 @@ export const env = createEnv({
     VERCEL_URL: z.string().optional(),
     USE_MOCK: z.union([z.literal("true"), z.literal("false")]).optional(),
   },
-  // client: {
-  //   NEXT_PUBLIC_USE_MOCK: z.literal("true").optional(),
-  // },
+
   runtimeEnv: {
     BASE_URL: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000",
     VERCEL: process.env.VERCEL,
