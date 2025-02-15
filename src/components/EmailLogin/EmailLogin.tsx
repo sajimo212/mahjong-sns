@@ -18,7 +18,7 @@ export default function EmailLogin() {
       console.log("✅ ログイン成功");
       router.push("/dashboard"); // ログイン後、ダッシュボードへ遷移
     } catch (error) {
-      setError("❌ ログインエラー: " + error.message);
+      setError("❌ ログインエラー: " + error);
     }
   };
 
