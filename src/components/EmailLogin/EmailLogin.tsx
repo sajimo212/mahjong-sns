@@ -18,7 +18,8 @@ export default function EmailLogin() {
       console.log("✅ ログイン成功");
       router.push("/dashboard"); // ログイン後、ダッシュボードへ遷移
     } catch (error) {
-      setError("❌ ログインエラー: " + error);
+      const message = typeof error === "string" ? error : error instanceof Error ? error.message : "";
+      setError("❌ ログインエラー: " + message);
     }
   };
 
@@ -29,12 +30,12 @@ export default function EmailLogin() {
       <input
         type="email"
         placeholder="メールアドレス"
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={e => setEmail(e.target.value)}
       />
       <input
         type="password"
         placeholder="パスワード"
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={e => setPassword(e.target.value)}
       />
       <button onClick={loginWithEmail}>ログイン</button>
     </div>
