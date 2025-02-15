@@ -29,6 +29,7 @@ export default async function GamesPage() {
           </Link>
         </div>
       ))}
+      
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { FlatCompat } from "@eslint/eslintrc";
 import tseslint from "typescript-eslint";
-import eslint from "@eslint/js";
+import js from "@eslint/js";
 import stylistic from "@stylistic/eslint-plugin";
 
 const compat = new FlatCompat({ baseDirectory: import.meta.dirname });
@@ -10,7 +10,7 @@ export default tseslint.config(
   {
     ignores: ["**/.next/**", "**/node_modules/**", "public/**"],
   },
-  eslint.configs.recommended,
+  js.configs.recommended,
   ...compat.extends("next/core-web-vitals"),
   stylistic.configs.customize({
     flat: true,
@@ -26,6 +26,8 @@ export default tseslint.config(
       reportUnusedInlineConfigs: "warn",
       reportUnusedDisableDirectives: "warn",
     },
+  },
+  {
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
@@ -33,6 +35,8 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
+  },
+  {
     rules: {
       "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
       "@typescript-eslint/no-confusing-void-expression": ["error", {

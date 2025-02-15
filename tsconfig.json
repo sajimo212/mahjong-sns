@@ -32,7 +32,9 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "functions/**/*.ts", // ここを追加
+    "functions/**/*.tsx" // ここを追加
   ],
   "exclude": [
     "node_modules"

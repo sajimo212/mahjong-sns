@@ -1,7 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-
 import styles from "./HistoryPage.module.css";
 
 type Taikyokutype = {
