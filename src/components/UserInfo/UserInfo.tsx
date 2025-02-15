@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { firebaseServices } from "@/lib/firebase";
 
 export default function UserInfo() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User |null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(firebaseServices.auth, (user) => {
