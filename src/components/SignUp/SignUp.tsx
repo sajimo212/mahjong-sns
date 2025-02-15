@@ -23,7 +23,7 @@ export default function SignUp() {
       setSuccess("✅ ユーザー登録成功！");
       console.log("✅ ユーザー登録成功:", userCredential.user);
     } catch (error) {
-      setError("❌ ユーザー登録エラー: " + error.message);
+      setError("❌ ユーザー登録エラー: " + error);
     }
   };
 
