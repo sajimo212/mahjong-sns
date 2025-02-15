@@ -4,9 +4,9 @@
   "private": true,
   "engines": {
     "node": "22.x || 24.x",
-    "pnpm": "^10.3.0"
+    "pnpm": "^10.4.0"
   },
-  "packageManager": "pnpm@10.3.0",
+  "packageManager": "pnpm@10.4.0",
   "engineStrict": true,
   "scripts": {
     "dev": "next dev",
@@ -47,5 +47,8 @@
     "workerDirectory": [
       "public"
     ]
+  },
+  "volta": {
+    "node": "22.14.0"
   }
 }
