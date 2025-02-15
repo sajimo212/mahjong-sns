@@ -6,20 +6,20 @@
   "eslint.enable": true,
   "eslint.run": "onSave",
   "eslint.useFlatConfig": true,
+  "eslint.workingDirectories": [
+    "./",
+    "./functions"
+  ],
   "[typescript][typescriptreact][javascript][javascriptreact]": {
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit"
     },
-    // for fix error
-    "eslint.format.enable": true,
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-    "editor.formatOnPaste": false,
-    "editor.formatOnSave": false,
-    "editor.formatOnType": false
   },
   // for json files
   "[json][jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features",
     "editor.formatOnSave": true
   },
+  "dotenv.enableAutocloaking": false
 }
