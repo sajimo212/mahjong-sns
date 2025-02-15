@@ -7,8 +7,6 @@ import { type Taikyoku, taikyokuSchema } from "@/types/taikyoku";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const taikyokuId = "123"; // または動的に生成
-
 export const ModalMakeTaikyoku = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeModal = () => dialogRef.current?.close();
@@ -28,6 +26,7 @@ export const ModalMakeTaikyoku = () => {
   const router = useRouter();
   const onSubmit = () => {
     // @TODO: ここで対局を作成する処理を書く
+    const taikyokuId = "123"; // 動的に生成
     router.push(`/taikyoku/${taikyokuId}`);
   };
 
@@ -43,7 +42,7 @@ export const ModalMakeTaikyoku = () => {
             <h3>対局を作成する</h3>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className={styles.inputGroup}>
-                <label htmlFor="options" className="block text-sm font-medium">
+                <label>
                   ルール選択:
                 </label>
                 <select {...register("type")}>
@@ -78,8 +77,16 @@ export const ModalMakeTaikyoku = () => {
                 </select>
               </div>
               <div className={styles.inputGroup}>
-                <label>ランキングに反映する重み: </label>
-                <input type="number" min="0" {...register("weight")} />
+                <label>点数の重み: </label>
+                <select {...register("weight")}>
+                  <option value="0">健康麻雀</option>
+                  <option value="1">点1</option>
+                  <option value="2">点2</option>
+                  <option value="3">点3</option>
+                  <option value="5">点5</option>
+                  <option value="10">点ピン</option>
+                  <option value="20">点リャンピン</option>
+                </select>
               </div>
 
               <button className={styles.submitButton} type="submit">作成する</button>
