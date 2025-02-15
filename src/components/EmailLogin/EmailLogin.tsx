@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { firebaseServices } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 
 export default function EmailLogin() {
@@ -14,7 +14,7 @@ export default function EmailLogin() {
   const loginWithEmail = async () => {
     setError("");
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(firebaseServices.auth, email, password);
       console.log("✅ ログイン成功");
       router.push("/dashboard"); // ログイン後、ダッシュボードへ遷移
     } catch (error) {
