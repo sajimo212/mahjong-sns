@@ -25,13 +25,13 @@ export default function Navigation() {
         href="/score"
         className={`${styles.tab} ${pathname === "/score" ? styles.active : ""}`}
       >
-        成績
+        ランキング
       </Link>
       <Link
         href={{ pathname: "/taikyoku" }}
         className={`${styles.tab} ${pathname === "/ranking" ? styles.active : ""}`}
       >
-        ランキング
+        募集
       </Link>
     </nav>
   );

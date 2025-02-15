@@ -97,3 +97,22 @@ ul.ddmenu a:hover {
 ul.ddmenu ul {
   display: none;         /* ★5:非表示にする */
 }
+
+.playersinfo {
+  cursor: pointer; /* クリックできることを示すカーソル */
+  padding: 8px 0;  /* 見た目を整えるために少し余白を追加 */
+  font-size: 16px;  /* フォントサイズを調整 */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* 背景色とサイズ変更のアニメーション追加 */
+  border: 1px solid transparent; /* ボーダーを透明にして初期状態で見えないように */
+  border-radius: 4px; /* 角を丸くする */
+}
+
+.playersinfo:hover {
+  background-color: #f0f0f0; /* ホバー時に背景色を変更 */
+  transform: scale(1.05); /* ホバー時に少し拡大 */
+  border-color: #f0f0f0; /* ホバー時にボーダー色を変える */
+}
+
+.playersinfo:active {
+  transform: scale(0.98); /* クリック時に少し縮小 */
+}
