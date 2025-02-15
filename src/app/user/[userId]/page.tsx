@@ -1,18 +1,15 @@
 "use client";
 
 import { ChangeEvent, useState } from "react";
-import styles from "./UserPage.module.css";
+import styles from "../UserPage.module.css";
 import { Line } from "react-chartjs-2";
-import { Chart as ChartJS, Legend, Colors, Tooltip, LineElement, PointElement, LinearScale, Title, CategoryScale, TimeScale } from "chart.js";
-import "chartjs-adapter-date-fns";
-import Link from "next/link";
+import { Chart as ChartJS, Legend, Colors, Tooltip, LineElement, PointElement, LinearScale, Title, CategoryScale } from "chart.js";
 
 const user = {
   name: "sajimoto",
   point: [[10, 70, 10, -20, -31, 26], [-10, 60, 10, -31, -29, 58]],
   rank: [[2, 1, 2, 3, 4, 2], [4, 1, 2, 3, 2, 1]],
-  date: [["2021-01-01T12:50:00+09:00", "2021-02-01T12:50:00+09:00", "2021-03-01T12:50:00+09:00", "2021-04-01T12:50:00+09:00", "2021-05-01T12:50:00+09:00", "2021-06-01T12:50:00+09:00"],
-    ["2022-01-01T12:50:00+09:00", "2022-02-01T12:50:00+09:00", "2022-03-01T12:50:00+09:00", "2022-04-01T12:50:00+09:00", "2022-05-01T12:50:00+09:00", "2022-06-01T12:50:00+09:00"]],
+  date: [["2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01"], ["2022-01-01", "2022-02-01", "2022-03-01", "2022-04-01", "2022-05-01", "2022-06-01"]],
   players: ["uechi", "take", "kanta", "kuroki"],
 };
 
@@ -20,18 +17,17 @@ export default function UserPage() {
   const status: string = "idle"; // eslint-disable-line @typescript-eslint/no-inferrable-types
   const isAuth: boolean = false; // eslint-disable-line @typescript-eslint/no-inferrable-types
   const [value, setValue] = useState("Myonma");
-  const [timeUnit, setTimeUnit] = useState<"millisecond" | "second" | "minute" | "hour" | "day" | "week" | "month" | "quarter" | "year">("month"); // 初期値は「日毎」
   // const router = useRouter();
 
-  const handleTimeUnitChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setTimeUnit(e.target.value as "millisecond" | "second" | "minute" | "hour" | "day" | "week" | "month" | "quarter" | "year"); // ユーザーが選択した単位を更新
-  };
+  ChartJS.register(Legend, Colors, Tooltip, LineElement, PointElement, LinearScale, Title, CategoryScale);
 
-  ChartJS.register(Legend, Colors, Tooltip, LineElement, PointElement, LinearScale, Title, CategoryScale, TimeScale);
-
-  const handleTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setValue(event.target.value);
   };
+
+  // const handlePlayerClick = (player) => {
+  //   alert(`${player}がクリックされました`);
+  // };
 
   type User = {
     point: number[][]; // ゲームのポイント
@@ -71,10 +67,11 @@ export default function UserPage() {
           <p className={styles.info}>
             名前:
             {user.name}
+            {/* {playername} */}
           </p>
         </div>
         <div>
-          <select className={styles.ddmenu} onChange={handleTypeChange}>
+          <select className={styles.ddmenu} onChange={handleChange}>
             <optgroup label="Mリーグルール">
               <option value="Myonma">四麻</option>
               <option value="Msanma">三麻</option>
@@ -112,11 +109,6 @@ export default function UserPage() {
             }
           })()}
         </div>
-        <select onChange={handleTimeUnitChange}>
-          <option value="day">日毎</option>
-          <option value="month">月毎</option>
-          <option value="year">年毎</option>
-        </select>
         <Line
           datasetIdKey="id"
           data={{
@@ -126,39 +118,51 @@ export default function UserPage() {
                 label: value === "Myonma" ? "四麻ポイント" : "三麻ポイント",
                 data: value === "Myonma" ? user.point[0] : user.point[1],
               },
+              // {
+
+              //   label: "",
+              //   data: [3, 2, 1],
+              // },
             ],
           }}
-          options={{
-            scales: {
-              x: {
-                type: "time",
-                time: {
-                  unit: timeUnit, // 動的に変更されるunit
-                  tooltipFormat: "ll",
-                  displayFormats: {
-                    day: "yyyy-MM-dd",
-                    month: "yyyy-MM",
-                    year: "yyyy",
-                  },
-                },
-                title: {
-                  display: true,
-                  text: "日付",
-                },
-              },
-              y: {
-                title: {
-                  display: true,
-                  text: "ポイント",
-                },
+          options={{ scales: {
+            x: {
+              display: true,
+              title: {
+                display: true,
+                text: "日付",
               },
             },
-          }}
-        />
+            y: {
+              title: {
+                display: true,
+                text: "ポイント",
+              },
 
+            },
+          },
+          plugins: {
+            // tooltip: {
+            //   callbacks: {
+            //     title: (context) => {
+            //       const game = gameHistory[context[0].dataIndex];
+            //       return formatDate(game.createdAt);
+            //     },
+            //     label: (context) => {
+            //       const label = context.dataset.label ?? "";
+            //       const player = players.find(player => player.name === label);
+            //       if (context.parsed.y !== null) {
+            //         const playerPoint = gameHistory[context.parsed.x]?.score.find(score => score.uuid === player?.uuid)?.point ?? 0;
+            //         return `${label}: ${formatPoint(playerPoint)} (累積 ${formatPoint(context.parsed.y)})`;
+            //       }
+            //     },
+            //   },
+            // },
+          } }}
+        />
         <h1 className={styles.title}>
           {user.name}
-          さんの友人一覧
+          さんの友人一覧だよ
         </h1>
         {user.players.slice(0, 4).map((player, index) => (
           <p
@@ -168,7 +172,7 @@ export default function UserPage() {
           >
             名前:
             {" "}
-            <Link href={{ pathname: `/user/userId`, query: { player } }}>{player}</Link>
+            {player}
           </p>
         ))}
 
