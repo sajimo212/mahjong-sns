@@ -14,24 +14,12 @@ importers:
       '@t3-oss/env-nextjs':
         specifier: ^0.12.0
         version: 0.12.0(typescript@5.7.3)(zod@3.24.1)
-<<<<<<< HEAD
-      chart.js:
-        specifier: ^4.4.7
-        version: 4.4.7
-      chartjs-adapter-date-fns:
-        specifier: ^3.0.0
-        version: 3.0.0(chart.js@4.4.7)(date-fns@4.1.0)
-      highcharts:
-        specifier: ^12.1.2
-        version: 12.1.2
-=======
       firebase:
         specifier: ^11.3.1
         version: 11.3.1
       firebase-admin:
         specifier: ^13.1.0
         version: 13.1.0
->>>>>>> develop
       next:
         specifier: ^15.1.6
         version: 15.1.6(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
