@@ -45,7 +45,7 @@ export default async function RankingPage() {
 
           return (
             <li key={index} className={`${styles.rankingItem} ${rankClass}`}>
-              <span className={`${styles.rank}`}>
+              <span className={styles.rank}>
                 {rank}
                 位
               </span>
