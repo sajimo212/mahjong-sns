@@ -14,6 +14,12 @@ importers:
       '@t3-oss/env-nextjs':
         specifier: ^0.12.0
         version: 0.12.0(typescript@5.7.3)(zod@3.24.1)
+      chart.js:
+        specifier: ^4.4.7
+        version: 4.4.7
+      chartjs-adapter-date-fns:
+        specifier: ^3.0.0
+        version: 3.0.0(chart.js@4.4.7)(date-fns@4.1.0)
       firebase:
         specifier: ^11.3.1
         version: 11.3.1
@@ -547,13 +553,11 @@ packages:
       '@types/node':
         optional: true
 
-<<<<<<< HEAD
-  '@kurkle/color@0.3.4':
-    resolution: {integrity: sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w==}
-=======
   '@js-sdsl/ordered-map@4.4.2':
     resolution: {integrity: sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==}
->>>>>>> develop
+
+  '@kurkle/color@0.3.4':
+    resolution: {integrity: sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w==}
 
   '@mswjs/interceptors@0.37.6':
     resolution: {integrity: sha512-wK+5pLK5XFmgtH3aQ2YVvA3HohS3xqV/OxuVOdNx9Wpnz7VE/fnC+e1A7ln6LFYeck7gOJ/dsZV6OLplOtAJ2w==}
@@ -1484,10 +1488,6 @@ packages:
   headers-polyfill@4.0.3:
     resolution: {integrity: sha512-IScLbePpkvO846sIwOtOTDjutRMWdXdJmXdMvk6gCBHxFO8d+QKOQedyZSxFTTFYRSmlgSTDtXqqq4pcenBXLQ==}
 
-<<<<<<< HEAD
-  highcharts@12.1.2:
-    resolution: {integrity: sha512-paZ72q1um0zZT1sS+O/3JfXVSOLPmZ0zlo8SgRc0rEplPFPQUPc4VpkgQS8IUTueeOBgIWwVpAWyC9tBYbQ0kg==}
-=======
   html-entities@2.5.2:
     resolution: {integrity: sha512-K//PSRMQk4FZ78Kyau+mZurHn3FH0Vwr+H36eE0rPbeYkRRi9YxceYPhuN60UwWorxyKHhqoAJl2OFKa4BVtaA==}
 
@@ -1508,7 +1508,6 @@ packages:
 
   idb@7.1.1:
     resolution: {integrity: sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ==}
->>>>>>> develop
 
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
@@ -2984,12 +2983,10 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.13.1
 
-<<<<<<< HEAD
-  '@kurkle/color@0.3.4': {}
-=======
   '@js-sdsl/ordered-map@4.4.2':
     optional: true
->>>>>>> develop
+
+  '@kurkle/color@0.3.4': {}
 
   '@mswjs/interceptors@0.37.6':
     dependencies:
@@ -4190,9 +4187,6 @@ snapshots:
 
   headers-polyfill@4.0.3: {}
 
-<<<<<<< HEAD
-  highcharts@12.1.2: {}
-=======
   html-entities@2.5.2:
     optional: true
 
@@ -4223,7 +4217,6 @@ snapshots:
       - supports-color
 
   idb@7.1.1: {}
->>>>>>> develop
 
   ignore@5.3.2: {}
 
