@@ -58,3 +58,41 @@
     cursor: pointer;
   }
 
+  .rankingList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .rankingItem {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .rank {
+    font-weight: bold;
+  }
+  
+  .name {
+    flex-grow: 1;
+    text-align: left;
+    margin-left: 10px;
+  }
+  
+  .score {
+    text-align: right;
+  }
+
+  /* colors */
+  .gold {
+    color: gold;
+  }
+  
+  .silver {
+    color: silver;
+  }
+  
+  .bronze {
+    color: #cd7f32;
+  }
