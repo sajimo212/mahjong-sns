@@ -21,7 +21,7 @@ export default function Dashboard() {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [router]);
 
   if (loading) {
     return <p>Loading...</p>;

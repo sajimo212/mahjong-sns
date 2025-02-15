@@ -1,5 +1,5 @@
 import { delay, http, HttpResponse } from "msw";
-import type { Game, Games, Player } from "@/types/game";
+import type { Game, Taikyoku, Player } from "@/types/game";
 import type { History } from "@/types/history";
 import { getGameMock } from "./game";
 import { GetHistoryParams, GetHistoryRequestBody, GetHistoryResponseBody } from "@/app/api/v1/history/route";
@@ -27,7 +27,7 @@ const getParticipatedPlayersFromGameList = (games: Game[]): Player[] => {
   return players;
 };
 
-const getGamesMock = ({ gamesId, length }: { gamesId: string; length: number }): Games => {
+const getTaikyokuMock = ({ gamesId, length }: { gamesId: string; length: number }): Taikyoku => {
   const games = Array.from(
     { length },
     (_, index) => getGameMock({ gameId: `${gamesId}-${index}` }),
@@ -43,7 +43,7 @@ const getGamesMock = ({ gamesId, length }: { gamesId: string; length: number }):
 export const getPlayerHistoryMock = ({ length }: { length: number }): History => (
   Array.from(
     { length },
-    (_, index) => getGamesMock({
+    (_, index) => getTaikyokuMock({
       gamesId: `mock--${index}`,
       length: Math.random() < 0.5 ? 4 : 8,
     }),

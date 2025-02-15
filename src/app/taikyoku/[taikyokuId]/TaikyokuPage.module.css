@@ -31,7 +31,8 @@
   border-collapse: collapse;
 }
 
-.rankingTable th, .rankingTable td {
+.rankingTable th,
+.rankingTable td {
   border: 1px solid #ddd;
   padding: 8px;
 }
@@ -62,7 +63,8 @@
   border-collapse: collapse;
 }
 
-.gameRecord th, .gameRecord td {
+.gameRecord th,
+.gameRecord td {
   border: 1px solid #ddd;
   padding: 5px;
   text-align: center;
@@ -89,6 +91,15 @@
 
 .inputGroup {
   margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputGroup>input,
+.inputGroup>select {
+  height: 2.5em;
+  margin-inline-start: 1em;
 }
 
 .submitButton {

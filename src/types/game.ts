@@ -21,7 +21,7 @@ export const gameSchema = z.object({
   date: zPastISO8601,
 });
 
-export const gamesSchema = z.object({
+export const taikyokuSchema = z.object({
   id: z.string(),
   games: z.array(gameSchema, { required_error: "対局が見つかりません" }),
   players: z.array(playerSchema, { required_error: "対局のプレイヤーが見つかりません" }),
@@ -30,4 +30,4 @@ export const gamesSchema = z.object({
 export type Player = z.infer<typeof playerSchema>;
 export type Score = z.infer<typeof scoreSchema>;
 export type Game = z.infer<typeof gameSchema>;
-export type Games = z.infer<typeof gamesSchema>;
+export type Taikyoku = z.infer<typeof taikyokuSchema>;
