@@ -7,7 +7,7 @@ export const ModalMakeGame = ({ players }: { players: Player[] }) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeModal = () => dialogRef.current?.close();
   const openModal = () => dialogRef.current?.showModal();
-  
+
   // データベース更新するよう修正
   const handleSubmit = () => {
     closeModal();
@@ -28,7 +28,7 @@ export const ModalMakeGame = ({ players }: { players: Player[] }) => {
                 <label>{player.name}</label>
                 <input
                   type="number"
-                  
+
                 />
               </div>
             ))}

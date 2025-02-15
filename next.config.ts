@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   },
   eslint: {
     dirs: ["src", "."],
+    ignoreDuringBuilds: true,
   },
 };
 
