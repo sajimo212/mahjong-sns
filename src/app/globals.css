@@ -19,3 +19,39 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* 追加したやつ */
+.container {
+  max-width: 768px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  background-color: #000;
+  color: #fff;
+  padding: 16px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-around;
+  background-color: #333;
+  padding: 8px 0;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 16px;
+}
+
+.nav-link:hover {
+  background-color: #555;
+  border-radius: 4px;
+}

@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "eslint.config.*",
+    "functions/**/*.ts", // ここを追加してfunctionsディレクトリを含める
+    "functions/**/*.js",
+    "functions/**/*.tsx",
+    "functions/eslint.config.*"
+  ]
+}
