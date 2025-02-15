@@ -1,11 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import styles from "../UserPage.module.css";
-import { delay } from "msw";
-import { redirect } from "next/navigation";
 import { Line } from "react-chartjs-2";
-import { useRouter } from "next/navigation";
 import { Chart as ChartJS, Legend, Colors, Tooltip, LineElement, PointElement, LinearScale, Title, CategoryScale } from "chart.js";
 
 const user = {
@@ -20,28 +17,27 @@ export default function UserPage() {
   const status: string = "idle"; // eslint-disable-line @typescript-eslint/no-inferrable-types
   const isAuth: boolean = false; // eslint-disable-line @typescript-eslint/no-inferrable-types
   const [value, setValue] = useState("Myonma");
-  const router = useRouter();
-  const playername = router.query; // 受け取ったデータ
+  // const router = useRouter();
 
   ChartJS.register(Legend, Colors, Tooltip, LineElement, PointElement, LinearScale, Title, CategoryScale);
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setValue(event.target.value);
   };
 
-  const handlePlayerClick = (player) => {
-    alert(`${player}がクリックされました`);
-  };
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   await delay();
-  //   /** TODO: login */
-  //   redirect("/game");
+  // const handlePlayerClick = (player) => {
+  //   alert(`${player}がクリックされました`);
   // };
 
-  const calAve = (user, type, gameType) => {
-    const getAverage = arr => arr.reduce((sum, val) => sum + val, 0) / arr.length;
+  type User = {
+    point: number[][]; // ゲームのポイント
+    rank: number[][]; // ゲームの順位
+    date: string[][]; // 日付
+    players: string[]; // プレイヤー名
+  };
+
+  const calAve = (user: User, type: "point" | "rank", gameType: "four" | "three" | "all"): number | { four: { point: number; rank: number }; three: { point: number; rank: number } } => {
+    const getAverage = (arr: number[]) => arr.reduce((sum: number, val: number) => sum + val, 0) / arr.length;
     const fourPlayerAvg = getAverage(user.point[0]);
     const threePlayerAvg = getAverage(user.point[1]);
     const fourPlayerRankAvg = getAverage(user.rank[0]);
@@ -87,11 +83,11 @@ export default function UserPage() {
                 <div>
                   <p className={styles.info}>
                     Mリーグ四麻合計ポイント：
-                    {calAve(user, "point", "four")}
+                    {typeof calAve(user, "point", "four") === "number" ? (calAve(user, "point", "four") as number) : "N/A"}
                   </p>
                   <p className={styles.info}>
                     Mリーグ四麻平均順位：
-                    {calAve(user, "rank", "four")}
+                    {typeof calAve(user, "rank", "four") === "number" ? (calAve(user, "rank", "four") as number) : "N/A"}
                   </p>
                 </div>
               );
@@ -100,11 +96,11 @@ export default function UserPage() {
                 <div>
                   <p className={styles.info}>
                     Mリーグ三麻平均ポイント：
-                    {calAve(user, "point", "three")}
+                    {typeof calAve(user, "point", "three") === "number" ? (calAve(user, "point", "three") as number) : "N/A"}
                   </p>
                   <p className={styles.info}>
                     Mリーグ三麻平均順位：
-                    {calAve(user, "rank", "three")}
+                    {typeof calAve(user, "rank", "three") === "number" ? (calAve(user, "rank", "three") as number) : "N/A"}
                   </p>
                 </div>
               );
@@ -172,7 +168,7 @@ export default function UserPage() {
           <p
             key={index}
             className={styles.playersinfo}
-            onClick={() => handlePlayerClick(player)}
+            // onClick={() => handlePlayerClick(player)}
           >
             名前:
             {" "}

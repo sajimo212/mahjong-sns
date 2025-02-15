@@ -1,11 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import styles from "./UserPage.module.css";
-import { delay } from "msw";
-import { redirect } from "next/navigation";
 import { Line } from "react-chartjs-2";
-import { useRouter } from "next/navigation";
 import { Chart as ChartJS, Legend, Colors, Tooltip, LineElement, PointElement, LinearScale, Title, CategoryScale, TimeScale } from "chart.js";
 import "chartjs-adapter-date-fns";
 import Link from "next/link";
@@ -23,35 +20,28 @@ export default function UserPage() {
   const status: string = "idle"; // eslint-disable-line @typescript-eslint/no-inferrable-types
   const isAuth: boolean = false; // eslint-disable-line @typescript-eslint/no-inferrable-types
   const [value, setValue] = useState("Myonma");
-  const [timeUnit, setTimeUnit] = useState("day"); // 初期値は「日毎」
-  const router = useRouter();
+  const [timeUnit, setTimeUnit] = useState<"millisecond" | "second" | "minute" | "hour" | "day" | "week" | "month" | "quarter" | "year">("month"); // 初期値は「日毎」
+  // const router = useRouter();
 
-  const handleTimeUnitChange = (e) => {
-    setTimeUnit(e.target.value); // ユーザーが選択した単位を更新
+  const handleTimeUnitChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setTimeUnit(e.target.value as "millisecond" | "second" | "minute" | "hour" | "day" | "week" | "month" | "quarter" | "year"); // ユーザーが選択した単位を更新
   };
 
   ChartJS.register(Legend, Colors, Tooltip, LineElement, PointElement, LinearScale, Title, CategoryScale, TimeScale);
 
-  const handleChange = (event) => {
+  const handleTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setValue(event.target.value);
   };
 
-  const handlePlayerClick = (player) => {
-    router.push({
-      pathname: "/page2",
-      query: { name: "Alice", age: 25 },
-    });
+  type User = {
+    point: number[][]; // ゲームのポイント
+    rank: number[][]; // ゲームの順位
+    date: string[][]; // 日付
+    players: string[]; // プレイヤー名
   };
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   await delay();
-  //   /** TODO: login */
-  //   redirect("/game");
-  // };
-
-  const calAve = (user, type, gameType) => {
-    const getAverage = arr => arr.reduce((sum, val) => sum + val, 0) / arr.length;
+  const calAve = (user: User, type: "point" | "rank", gameType: "four" | "three" | "all"): number | { four: { point: number; rank: number }; three: { point: number; rank: number } } => {
+    const getAverage = (arr: number[]) => arr.reduce((sum: number, val: number) => sum + val, 0) / arr.length;
     const fourPlayerAvg = getAverage(user.point[0]);
     const threePlayerAvg = getAverage(user.point[1]);
     const fourPlayerRankAvg = getAverage(user.rank[0]);
@@ -84,7 +74,7 @@ export default function UserPage() {
           </p>
         </div>
         <div>
-          <select className={styles.ddmenu} onChange={handleChange}>
+          <select className={styles.ddmenu} onChange={handleTypeChange}>
             <optgroup label="Mリーグルール">
               <option value="Myonma">四麻</option>
               <option value="Msanma">三麻</option>
@@ -96,11 +86,11 @@ export default function UserPage() {
                 <div>
                   <p className={styles.info}>
                     Mリーグ四麻合計ポイント：
-                    {calAve(user, "point", "four")}
+                    {typeof calAve(user, "point", "four") === "number" ? (calAve(user, "point", "four") as number) : "N/A"}
                   </p>
                   <p className={styles.info}>
                     Mリーグ四麻平均順位：
-                    {calAve(user, "rank", "four")}
+                    {typeof calAve(user, "rank", "four") === "number" ? (calAve(user, "rank", "four") as number) : "N/A"}
                   </p>
                 </div>
               );
@@ -109,11 +99,11 @@ export default function UserPage() {
                 <div>
                   <p className={styles.info}>
                     Mリーグ三麻平均ポイント：
-                    {calAve(user, "point", "three")}
+                    {typeof calAve(user, "point", "three") === "number" ? (calAve(user, "point", "three") as number) : "N/A"}
                   </p>
                   <p className={styles.info}>
                     Mリーグ三麻平均順位：
-                    {calAve(user, "rank", "three")}
+                    {typeof calAve(user, "rank", "three") === "number" ? (calAve(user, "rank", "three") as number) : "N/A"}
                   </p>
                 </div>
               );
