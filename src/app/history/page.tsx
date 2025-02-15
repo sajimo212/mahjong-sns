@@ -29,7 +29,7 @@ export default async function GamesPage() {
           </Link>
         </div>
       ))}
-      {ref.docs.map(doc => (<>{doc}</>))}
+      
     </div>
   );
 }

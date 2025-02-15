@@ -28,7 +28,7 @@ export default function Navigation() {
         成績
       </Link>
       <Link
-        href="/taikyoku"
+        href="/ranking"
         className={`${styles.tab} ${pathname === "/ranking" ? styles.active : ""}`}
       >
         ランキング

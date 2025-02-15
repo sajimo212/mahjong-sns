@@ -1,6 +1,9 @@
-import { applicationDefault, initializeApp } from "firebase-admin/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
-// Firebaseの設定（環境変数を利用）
+// 環境変数の取得（undefined の場合エラー）
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -8,11 +11,25 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-} as const;
+};
 
-const app = initializeApp({
-  credential: applicationDefault(),
-});
-export const auth = app.auth();
-// export const provider = new GoogleAuthProvider();
-export const db = app.firestore();
+// 必須変数が不足していないか確認
+const missingKeys = Object.entries(firebaseConfig)
+  .filter(([_, value]) => !value) // 空文字や undefined を検出
+  .map(([key]) => key);
+
+if (missingKeys.length > 0) {
+  console.error(" Firebase の設定が不足しています:", missingKeys);
+  throw new Error("Firebaseの設定が不完全です。");
+}
+
+// 初期化（すでにアプリが存在する場合は再初期化しない）
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+
+export const firebaseServices = {
+  db: getFirestore(app),
+  auth: getAuth(app),
+  storage: getStorage(app),
+};
+
+console.log("🔥 Firebase 初期化成功");
