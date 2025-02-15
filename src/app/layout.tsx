@@ -1,6 +1,8 @@
 import Header from "@/components/Header/Header";
 import Navigation from "@/components/Navigation/Navigation";
 import { env } from "@/env";
+import SessionProvider from "@/components/SessionProvider/SessionProvider";
+import "./globals.css";
 
 if (env.USE_MOCK === "true") {
   console.log("== setup mock: msw ==");
@@ -19,7 +21,7 @@ export default function RootLayout({
       <body>
         <Header />
         <Navigation />
-        <main>{children}</main>
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );

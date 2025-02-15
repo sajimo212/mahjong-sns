@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { firebaseServices } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function EmailLogin() {
   const [email, setEmail] = useState("");
@@ -14,9 +15,28 @@ export default function EmailLogin() {
   const loginWithEmail = async () => {
     setError("");
     try {
-      await signInWithEmailAndPassword(firebaseServices.auth, email, password);
-      console.log("✅ ログイン成功");
-      router.push("/dashboard"); // ログイン後、ダッシュボードへ遷移
+      // Firebaseでログイン
+      const userCredential = await signInWithEmailAndPassword(firebaseServices.auth, email, password);
+      const user = userCredential.user;
+      console.log("✅ Firebase ログイン成功", user);
+
+      // FirebaseのIDトークンを取得
+      const idToken = await user.getIdToken();
+
+      // next-auth の認証を行う
+      const nextAuthResponse = await signIn("credentials", {
+        idToken,
+        redirect: false,
+      });
+
+      if (nextAuthResponse?.error) {
+        throw new Error(nextAuthResponse.error);
+      }
+
+      console.log("✅ next-auth セッション作成成功");
+
+      // ログイン後の遷移
+      router.push("/dashboard");
     } catch (error) {
       const message = typeof error === "string" ? error : error instanceof Error ? error.message : "";
       setError("❌ ログインエラー: " + message);
@@ -30,11 +50,13 @@ export default function EmailLogin() {
       <input
         type="email"
         placeholder="メールアドレス"
+        value={email}
         onChange={e => setEmail(e.target.value)}
       />
       <input
         type="password"
         placeholder="パスワード"
+        value={password}
         onChange={e => setPassword(e.target.value)}
       />
       <button onClick={loginWithEmail}>ログイン</button>
