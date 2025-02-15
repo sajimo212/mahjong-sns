@@ -14,9 +14,8 @@ const firebaseConfig = {
 };
 
 // 必須変数が不足していないか確認
-const missingKeys = Object.entries(firebaseConfig)
-  .filter(([_, value]) => !value) // 空文字や undefined を検出
-  .map(([key]) => key);
+const missingKeys = Object.keys(firebaseConfig)
+  .filter(key => !firebaseConfig[key as keyof typeof firebaseConfig]); // 空文字や undefined を検出
 
 if (missingKeys.length > 0) {
   console.error(" Firebase の設定が不足しています:", missingKeys);

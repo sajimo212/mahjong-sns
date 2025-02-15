@@ -38,8 +38,8 @@ export default function EmailLogin() {
       // ログイン後の遷移
       router.push("/dashboard");
     } catch (error) {
-      console.error("❌ ログインエラー:", error);
-      setError("❌ ログインエラー: " + (error instanceof Error ? error.message : "不明なエラー"));
+      const message = typeof error === "string" ? error : error instanceof Error ? error.message : "";
+      setError("❌ ログインエラー: " + message);
     }
   };
 
