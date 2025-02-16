@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 import "@/env";
 
 const nextConfig: NextConfig = {
+  trailingSlash: false,
   experimental: {
     typedRoutes: true,
   },
