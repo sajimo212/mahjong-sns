@@ -1,11 +1,14 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import styles from "./UserPage.module.css";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, Legend, Colors, Tooltip, LineElement, PointElement, LinearScale, Title, CategoryScale, TimeScale } from "chart.js";
 import "chartjs-adapter-date-fns";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthProvider";
+import UserInfo from "@/components/UserInfo/UserInfo";
+import { useRouter } from "next/navigation";
 
 const user = {
   name: "sajimoto",
@@ -17,11 +20,18 @@ const user = {
 };
 
 export default function UserPage() {
+  const { currentUser, loading } = useAuth();
+  const router = useRouter();
   const status: string = "idle"; // eslint-disable-line @typescript-eslint/no-inferrable-types
-  const isAuth: boolean = false; // eslint-disable-line @typescript-eslint/no-inferrable-types
   const [value, setValue] = useState("Myonma");
   const [timeUnit, setTimeUnit] = useState<"millisecond" | "second" | "minute" | "hour" | "day" | "week" | "month" | "quarter" | "year">("month"); // 初期値は「日毎」
   // const router = useRouter();
+
+  useEffect(() => {
+    if (!currentUser && !loading) {
+      router.push("/auth");
+    }
+  }, [currentUser, loading]);
 
   const handleTimeUnitChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setTimeUnit(e.target.value as "millisecond" | "second" | "minute" | "hour" | "day" | "week" | "month" | "quarter" | "year"); // ユーザーが選択した単位を更新
@@ -63,131 +73,120 @@ export default function UserPage() {
     return <p className={styles.loading}>読み込み中...</p>;
   }
 
-  if (!isAuth) { // eslint-disable-line @typescript-eslint/no-unnecessary-condition
+  if (currentUser) {
     return (
       <div>
         <div>
-          <h1 className={styles.title}>ユーザー情報画面</h1>
-          <p className={styles.info}>
-            名前:
-            {user.name}
-          </p>
-        </div>
-        <div>
-          <select className={styles.ddmenu} onChange={handleTypeChange}>
-            <optgroup label="Mリーグルール">
-              <option value="Myonma">四麻</option>
-              <option value="Msanma">三麻</option>
-            </optgroup>
+          <div>
+            <h1 className={styles.title}>ユーザー情報画面</h1>
+            <p className={styles.info}>
+              名前:
+              {user.name}
+            </p>
+          </div>
+          <div>
+            <select className={styles.ddmenu} onChange={handleTypeChange}>
+              <optgroup label="Mリーグルール">
+                <option value="Myonma">四麻</option>
+                <option value="Msanma">三麻</option>
+              </optgroup>
+            </select>
+            {(() => {
+              if (value === "Myonma") {
+                return (
+                  <div>
+                    <p className={styles.info}>
+                      Mリーグ四麻合計ポイント：
+                      {typeof calAve(user, "point", "four") === "number" ? (calAve(user, "point", "four") as number) : "N/A"}
+                    </p>
+                    <p className={styles.info}>
+                      Mリーグ四麻平均順位：
+                      {typeof calAve(user, "rank", "four") === "number" ? (calAve(user, "rank", "four") as number) : "N/A"}
+                    </p>
+                  </div>
+                );
+              } else if (value === "Msanma") {
+                return (
+                  <div>
+                    <p className={styles.info}>
+                      Mリーグ三麻平均ポイント：
+                      {typeof calAve(user, "point", "three") === "number" ? (calAve(user, "point", "three") as number) : "N/A"}
+                    </p>
+                    <p className={styles.info}>
+                      Mリーグ三麻平均順位：
+                      {typeof calAve(user, "rank", "three") === "number" ? (calAve(user, "rank", "three") as number) : "N/A"}
+                    </p>
+                  </div>
+                );
+              } else {
+                return <div> デバッグエラー</div>;
+              }
+            })()}
+          </div>
+          <select onChange={handleTimeUnitChange}>
+            <option value="day">日毎</option>
+            <option value="month">月毎</option>
+            <option value="year">年毎</option>
           </select>
-          {(() => {
-            if (value === "Myonma") {
-              return (
-                <div>
-                  <p className={styles.info}>
-                    Mリーグ四麻合計ポイント：
-                    {typeof calAve(user, "point", "four") === "number" ? (calAve(user, "point", "four") as number) : "N/A"}
-                  </p>
-                  <p className={styles.info}>
-                    Mリーグ四麻平均順位：
-                    {typeof calAve(user, "rank", "four") === "number" ? (calAve(user, "rank", "four") as number) : "N/A"}
-                  </p>
-                </div>
-              );
-            } else if (value === "Msanma") {
-              return (
-                <div>
-                  <p className={styles.info}>
-                    Mリーグ三麻平均ポイント：
-                    {typeof calAve(user, "point", "three") === "number" ? (calAve(user, "point", "three") as number) : "N/A"}
-                  </p>
-                  <p className={styles.info}>
-                    Mリーグ三麻平均順位：
-                    {typeof calAve(user, "rank", "three") === "number" ? (calAve(user, "rank", "three") as number) : "N/A"}
-                  </p>
-                </div>
-              );
-            } else {
-              return <div> デバッグエラー</div>;
-            }
-          })()}
-        </div>
-        <select onChange={handleTimeUnitChange}>
-          <option value="day">日毎</option>
-          <option value="month">月毎</option>
-          <option value="year">年毎</option>
-        </select>
-        <Line
-          datasetIdKey="id"
-          data={{
-            labels: value === "Myonma" ? user.date[0] : user.date[1],
-            datasets: [
-              {
-                label: value === "Myonma" ? "四麻ポイント" : "三麻ポイント",
-                data: value === "Myonma" ? user.point[0] : user.point[1],
-              },
-            ],
-          }}
-          options={{
-            scales: {
-              x: {
-                type: "time",
-                time: {
-                  unit: timeUnit, // 動的に変更されるunit
-                  tooltipFormat: "ll",
-                  displayFormats: {
-                    day: "yyyy-MM-dd",
-                    month: "yyyy-MM",
-                    year: "yyyy",
+          <Line
+            datasetIdKey="id"
+            data={{
+              labels: value === "Myonma" ? user.date[0] : user.date[1],
+              datasets: [
+                {
+                  label: value === "Myonma" ? "四麻ポイント" : "三麻ポイント",
+                  data: value === "Myonma" ? user.point[0] : user.point[1],
+                },
+              ],
+            }}
+            options={{
+              scales: {
+                x: {
+                  type: "time",
+                  time: {
+                    unit: timeUnit, // 動的に変更されるunit
+                    tooltipFormat: "ll",
+                    displayFormats: {
+                      day: "yyyy-MM-dd",
+                      month: "yyyy-MM",
+                      year: "yyyy",
+                    },
+                  },
+                  title: {
+                    display: true,
+                    text: "日付",
                   },
                 },
-                title: {
-                  display: true,
-                  text: "日付",
+                y: {
+                  title: {
+                    display: true,
+                    text: "ポイント",
+                  },
                 },
               },
-              y: {
-                title: {
-                  display: true,
-                  text: "ポイント",
-                },
-              },
-            },
-          }}
-        />
+            }}
+          />
 
-        <h1 className={styles.title}>
-          {user.name}
-          さんの友人一覧
-        </h1>
-        {user.players.slice(0, 4).map((player, index) => (
-          <p
-            key={index}
-            className={styles.playersinfo}
+          <h1 className={styles.title}>
+            {user.name}
+            さんの友人一覧
+          </h1>
+          {user.players.slice(0, 4).map((player, index) => (
+            <p
+              key={index}
+              className={styles.playersinfo}
             // onClick={() => handlePlayerClick(player)}
-          >
-            名前:
-            {" "}
-            <Link href={{ pathname: `/user/userId`, query: { player } }}>{player}</Link>
-          </p>
-        ))}
-
+            >
+              名前:
+              {" "}
+              <Link href={{ pathname: `/user/userId`, query: { player } }}>{player}</Link>
+            </p>
+          ))}
+          <UserInfo />
+        </div>
       </div>
     );
   }
-
-  return (
-    <div>
-      <h1 className={styles.title}>ユーザー情報画面</h1>
-      <p className={styles.info}>
-        名前:
-        {user.name}
-      </p>
-      {/* <button onClick={() => signOut()} className={styles.button}>
-        ログアウト
-      </button> */}
-    </div>
-  );
 }
 
 /* }

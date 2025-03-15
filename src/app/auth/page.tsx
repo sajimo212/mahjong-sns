@@ -1,5 +1,3 @@
-"use client";
-
 import EmailLogin from "@/components/EmailLogin/EmailLogin";
 import SignUp from "@/components/SignUp/SignUp";
 import UserInfo from "@/components/UserInfo/UserInfo";
