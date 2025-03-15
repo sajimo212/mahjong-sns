@@ -1,4 +1,3 @@
-/*
 import admin from "firebase-admin";
 import { getAuth } from "firebase-admin/auth";
 
@@ -30,36 +29,4 @@ if (!admin.apps.length) {
   }
 }
 
-export const adminAuth = getAuth();
-*/
-
-import admin from "firebase-admin";
-import { getAuth } from "firebase-admin/auth";
-
-// 環境変数の確認
-const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
-
-if (!serviceAccountKey) {
-  throw new Error("❌ Firebase Service Account Key が設定されていません。");
-}
-
-const serviceAccount = JSON.parse(serviceAccountKey);
-
-// Firebase Admin SDK の初期化
-if (!admin.apps.length) {
-  try {
-    admin.initializeApp({
-      credential: admin.credential.cert({
-        projectId: serviceAccount.project_id as string,
-        clientEmail: serviceAccount.client_email as string,
-        privateKey: (serviceAccount.private_key as string).replace(/\\n/g, "\n"),
-      }),
-    });
-    console.log("🔥 Firebase Admin 初期化成功");
-  } catch (error) {
-    console.error("❌ Firebase Admin の初期化エラー:", error);
-  }
-}
-
-// Firebase Admin SDKの認証機能
 export const adminAuth = getAuth();
