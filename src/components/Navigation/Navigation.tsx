@@ -28,8 +28,8 @@ export default function Navigation() {
         ランキング
       </Link>
       <Link
-        href="/score"
-        className={`${styles.tab} ${pathname === "/score" ? styles.active : ""}`}
+        href="/auth"
+        className={`${styles.tab} ${pathname === "/auth" ? styles.active : ""}`}
       >
         募集
       </Link>
