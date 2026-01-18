@@ -30,8 +30,7 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     session({ session, token }) {
-      if (session.user)
-        session.user.id = token.sub;
+      session.user.id = token.sub;
       return session;
     },
   },
