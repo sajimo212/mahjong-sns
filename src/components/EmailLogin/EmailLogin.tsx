@@ -36,7 +36,7 @@ export default function EmailLogin() {
       console.log("✅ next-auth セッション作成成功");
 
       // ログイン後の遷移
-      router.push("/dashboard");
+      router.push("/user");
     } catch (error) {
       const message = typeof error === "string" ? error : error instanceof Error ? error.message : "";
       setError("❌ ログインエラー: " + message);
