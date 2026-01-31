@@ -6,6 +6,9 @@ import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, Legend, Colors, Tooltip, LineElement, PointElement, LinearScale, Title, CategoryScale, TimeScale } from "chart.js";
 import "chartjs-adapter-date-fns";
 import Link from "next/link";
+import { firebaseServices } from "@/lib/firebase";
+import { getIdToken } from "firebase/auth";
+import { auth, updateProfile } from "firebase/auth";
 
 const user = {
   name: "sajimoto",
@@ -22,6 +25,70 @@ export default function UserPage() {
   const [value, setValue] = useState("Myonma");
   const [timeUnit, setTimeUnit] = useState<"millisecond" | "second" | "minute" | "hour" | "day" | "week" | "month" | "quarter" | "year">("month"); // 初期値は「日毎」
   // const router = useRouter();
+  const [userData, setUserData] = useState(null);
+
+  const fetchUserData = async () => {
+    const user = firebaseServices.auth.currentUser;
+
+    if (!user) {
+      alert("ユーザーがログインしていません");
+      return;
+    }
+
+    const idToken = await getIdToken(user);
+
+    const response = await fetch("/api/v1/getUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ idToken }),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      setUserData(data);
+    } else {
+      alert(`❌ エラー: ${data.error}`);
+    }
+  };
+
+  const [displayName, setDisplayName] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const updateDisplayName = async () => {
+    setError("");
+    setSuccess("");
+
+    const user = firebaseServices.auth.currentUser;
+
+    if (!user) {
+      setError("❌ ユーザーがログインしていません。");
+      return;
+    }
+
+    if (!displayName.trim()) {
+      setError("❌ displayName を入力してください。");
+      return;
+    }
+
+    try {
+      await updateProfile(user, { displayName });
+      await user.reload(); // 変更の即時反映
+
+      setSuccess("✅ displayNameが更新されました！");
+      console.log("✅ displayName更新成功: ", user);
+    } catch (error) {
+      const message
+        = typeof error === "string"
+          ? error
+          : error instanceof Error
+            ? error.message
+            : "";
+      setError("❌ displayName更新エラー: " + message);
+    }
+  };
 
   const handleTimeUnitChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setTimeUnit(e.target.value as "millisecond" | "second" | "minute" | "hour" | "day" | "week" | "month" | "quarter" | "year"); // ユーザーが選択した単位を更新
@@ -66,6 +133,35 @@ export default function UserPage() {
   if (!isAuth) { // eslint-disable-line @typescript-eslint/no-unnecessary-condition
     return (
       <div>
+        <h1>プロフィールページ</h1>
+        <button onClick={fetchUserData}>ユーザー情報取得</button>
+
+        {userData && (
+          <div>
+            <p>
+              UID:
+              {userData.uid}
+            </p>
+            <p>
+              メールアドレス:
+              {userData.email}
+            </p>
+            <p>
+              表示名:
+              {userData.displayName}
+            </p>
+          </div>
+        )}
+        <h2>displayNameの更新</h2>
+        {error && <p className="text-red-500">{error}</p>}
+        {success && <p className="text-green-500">{success}</p>}
+        <input
+          type="text"
+          placeholder="新しいユーザー名"
+          onChange={e => setDisplayName(e.target.value)}
+        />
+        <button onClick={updateDisplayName}>更新</button>
+
         <div>
           <h1 className={styles.title}>ユーザー情報画面</h1>
           <p className={styles.info}>
